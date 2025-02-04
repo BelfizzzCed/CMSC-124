@@ -17,7 +17,7 @@ char *dynamic_input(){
         if(!buffer) return NULL;
     }
     
-    buffer[index] = '\n';
+    buffer[index] = '\0';
     return buffer;
 }
 
