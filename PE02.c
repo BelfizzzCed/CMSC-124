@@ -64,6 +64,39 @@ int isValidCompressionInput(const char *input) {
     return 1; // Valid input
 }
 
+// Main Function
+int main() {
+    char choice;
+    do {
+        printf("\n===Main Menu ===\n");
+        printf("Welcome to this String Expansion/Compression program!\n");
+        printf("[P] Program Description\n");
+        printf("[E] String Expansion\n");
+        printf("[C] String Compression\n");
+        printf("[X] Exit\n");
+        printf("Choice: ");
+        scanf(" %c", choice);
+        choice = toupper(choice);
+
+        switch (choice) {
+            case 'P':
+                displayProgramDescription();
+                break;
+            case 'E':
+                stringExpansion();
+                break;
+            case 'X':
+                printf("Exiting the program. Goodbye!\n");
+                break;
+            default:
+                printf("invalid choice! Please try again.\n");
+                
+        }
+    } while (choice !='X');
+
+    return 0;
+}
+
 
 
 
