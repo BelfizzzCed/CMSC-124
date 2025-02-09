@@ -25,7 +25,7 @@ int isValidExpansionInput(const char *input) {
     return 1; // Valid input
 }
 
-/ Function to perform string expansion
+// Function to perform string expansion
 void stringExpansion() {
     char input[1000];
     printf("\n=== String Expansion ===\n");
@@ -39,6 +39,12 @@ void stringExpansion() {
 
     printf("Expanded Form: ");
     for (int i = 0; input[i] != '\0'; i++) {
+        if (isdigit(input[i])) {
+            int count = 0;
+            while (isdigit(input[i])) {
+                count = count * 10 +
+            }
+        }
 
 // Function to validate the input string for compression
 int isValidCompressionInput(const char *input) {
