@@ -64,6 +64,23 @@ int isValidCompressionInput(const char *input) {
     return 1; // Valid input
 }
 
+void stringCompresssion(){
+    chat input[1000];
+    printf("===String Compression===\n");
+    printf("Enter the expanded string (e.g, aabbb): ");
+    scanf("%s", input);
+
+    if (!isValidCompressionInput(input)) {
+        printf("Invalid input! The string should ony contain letters.\n");
+        return;
+    }
+
+    printf("Commpressed Form: ");
+    for (int i = 0; )
+    // continuation to be done tommrorw ayaw q na
+
+}
+
 // Main Function
 int main() {
     char choice;
