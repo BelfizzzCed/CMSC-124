@@ -4,7 +4,7 @@
 void displayProgramDescription() {
     printf("\n=== Program Description ===\n");
     printf("Developers: Dave Christian R. Royo (2022-10799) and Cedric P. Siosana (2022-)\n");
-    printf("Dates: October 1, 2023 - October 5, 2023\n");
+    printf("Dates: February 1, 2025 - February 10, 2025\n");
     printf("This program allows users to compress or expand strings.\n");
     printf("String Expansion: Converts a compressed string (e.g., 2a3b) into its expanded form (e.g., aabbb).\n");
     printf("String Compression: Converts an expanded string (e.g., aabbb) into its compressed form (e.g., 2a3b).\n");
@@ -15,6 +15,7 @@ void displayProgramDescription() {
     printf("Press any key to return to the main menu...\n");
     getchar(); // Wait for user input
     getchar(); // Clear the newline character
+}
 
 int isValidExpansionInput(const char *input) {
     for (int i = 0; input[i] != '\0'; i++) {
@@ -44,7 +45,14 @@ void stringExpansion() {
             while (isdigit(input[i])) {
                 count = count * 10 +
             }
+            for (int j = 0; j < count; j++) {
+                printf("%c", input[i]);
+            }
+        } else {
+            printf("%c", input[i]);
         }
+    }
+    printf("\n");
 
 // Function to validate the input string for compression
 int isValidCompressionInput(const char *input) {
