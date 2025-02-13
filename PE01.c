@@ -15,7 +15,7 @@
  *
  * Developer Information:
  * - Cedric P. SIOSANA (Student Number: 2022-09758)
- * - Dave Christian R. ROYO (Student Number: [Insert Student Number])
+ * - Dave Christian R. ROYO (Student Number: 2022-10799)
  *
  * Dates Covered for Program Development:
  * - Initial Development: Feb 9, 2025
@@ -242,7 +242,7 @@
              
              printf("Developers:\n");
              printf("  - Cedric P. SIOSANA (Student Number: 2022-09758)\n");
-             printf("  - Dave Christian R. ROYO (Student Number: [Insert Student Number])\n\n");
+             printf("  - Dave Christian R. ROYO (Student Number: 2022-10799)\n\n");
              
              printf("Dates Covered for Development:\n");
              printf("  - Initial Development: Feb. 9, 2025\n");

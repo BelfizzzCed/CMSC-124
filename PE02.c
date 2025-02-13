@@ -5,7 +5,7 @@
 
 void displayProgramDescription() {
     printf("\n=== Program Description ===\n");
-    printf("Developers: Dave Christian R. Royo (2022-10799) and Cedric P. Siosana (2022-)\n");
+    printf("Developers: Dave Christian R. Royo (2022-10799) and Cedric P. Siosana (2022-09758)\n");
     printf("Dates: February 1, 2025 - February 10, 2025\n");
     printf("This program allows users to compress or expand strings.\n");
     printf("String Expansion: Converts a compressed string (e.g., 2a3b) into its expanded form (e.g., aabbb).\n");
