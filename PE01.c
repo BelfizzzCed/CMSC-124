@@ -7,7 +7,7 @@
  * then evaluates the postfix expression.
  *
  * Allowed symbols for each infix expression:
- * - Numbers: non-negative integers
+ * - Numbers: integers (including negative numbers)
  * - Operators: subtraction (-), division (/), multiplication (*), addition (+), and modulo (%)
  * - Parentheses: ( and )
  * - Spaces (as delimiters): for separating numbers and other symbols. There is no restriction on the number
@@ -87,7 +87,7 @@
      }
  }
  
- // Function to convert infix expression to postfix notation
+ // Function to convert infix expression to postfix notation.
  // Returns a dynamically allocated string containing the postfix expression,
  // or NULL if an invalid character or mismatched parentheses are encountered.
  char *infix_to_postfix(char *infix) {
@@ -108,7 +108,36 @@
          if (isspace(infix[i])) {
              continue;
          }
-         // If it's a digit, process the full number
+         
+         // Check for a unary minus (e.g., "-10")
+         if (infix[i] == '-') {
+             int isUnary = 0;
+             int k = i - 1;
+             // Find the previous non-space character, if any.
+             while (k >= 0 && isspace(infix[k])) {
+                 k--;
+             }
+             if (k < 0 || infix[k] == '(' || infix[k] == '+' || infix[k] == '-' ||
+                 infix[k] == '*' || infix[k] == '/' || infix[k] == '%') {
+                 // Only treat as unary if the next character is a digit.
+                 if (i + 1 < len && isdigit(infix[i + 1])) {
+                     isUnary = 1;
+                 }
+             }
+             if (isUnary) {
+                 // Process negative number: add '-' then the digits.
+                 postfix[j++] = '-';
+                 i++; // move past the '-' sign
+                 while (i < len && isdigit(infix[i])) {
+                     postfix[j++] = infix[i++];
+                 }
+                 postfix[j++] = ' ';
+                 i--; // Adjust for the outer loop increment
+                 continue;
+             }
+         }
+         
+         // If it's a digit, process the full number.
          if (isdigit(infix[i])) {
              while (i < len && isdigit(infix[i])) {
                  postfix[j++] = infix[i++];
@@ -160,53 +189,60 @@
      return postfix;
  }
  
- // Function to evaluate the postfix expression using integer arithmetic.
+ // Function to evaluate the postfix expression using floating-point arithmetic.
  // It returns the evaluated result and sets *error to 1 if an error occurs.
- int evaluate_postfix(char *postfix, int *error) {
+ double evaluate_postfix(char *postfix, int *error) {
      int len = strlen(postfix);
-     int stack[len];
+     double stack[len];
      int top = -1;
      *error = 0;
-     
+ 
      // strtok modifies the string, so tokenizing a copy is recommended.
-     char *token = strtok(postfix, " ");
+     char *postfix_copy = strdup(postfix);
+     char *token = strtok(postfix_copy, " ");
      while (token != NULL) {
-         if (isdigit(token[0])) {
-             stack[++top] = atoi(token);
+         // Modified: Check if token is a number (including negative or unary positive numbers).
+         if (isdigit(token[0]) || 
+             ((token[0] == '-' || token[0] == '+') && token[1] != '\0' && isdigit(token[1]))) {
+             stack[++top] = atof(token);  // Convert token to double
          } else {
              // Ensure there are at least two operands available.
              if (top < 1) {
                  *error = 1;
-                 return 0;
+                 free(postfix_copy);
+                 return 0.0;
              }
-             int b = stack[top--];
-             int a = stack[top--];
+             double b = stack[top--];
+             double a = stack[top--];
              switch(token[0]) {
                  case '+': stack[++top] = a + b; break;
                  case '-': stack[++top] = a - b; break;
                  case '*': stack[++top] = a * b; break;
                  case '/':
-                     if (b == 0) { *error = 1; return 0; }
-                     stack[++top] = a / b;
+                     if (b == 0.0) { *error = 1; free(postfix_copy); return 0.0; }
+                     stack[++top] = a / b;  // Perform floating-point division
                      break;
                  case '%':
-                     if (b == 0) { *error = 1; return 0; }
-                     stack[++top] = a % b;
+                     if (b == 0.0) { *error = 1; free(postfix_copy); return 0.0; }
+                     // Cast to integers for modulo operation
+                     stack[++top] = (int)a % (int)b;
                      break;
                  default:
                      *error = 1;
-                     return 0;
+                     free(postfix_copy);
+                     return 0.0;
              }
          }
          token = strtok(NULL, " ");
      }
-     
+     free(postfix_copy);
+ 
      // If the stack does not contain exactly one element, the expression is invalid.
      if (top != 0) {
          *error = 1;
-         return 0;
+         return 0.0;
      }
-     
+ 
      return stack[top];
  }
  
@@ -236,7 +272,7 @@
              printf("This program evaluates arithmetic expressions by converting infix to postfix\n"
                     "and then evaluating the postfix expression.\n\n");
              printf("Allowed infix expression symbols:\n");
-             printf("  - Numbers: non-negative integers\n");
+             printf("  - Numbers: integers (including negative numbers)\n");
              printf("  - Operators: +, -, *, /, %% (modulo)\n");
              printf("  - Parentheses: ( and )\n");
              printf("  - Spaces: as delimiters (an expression without spaces is still valid)\n\n");
@@ -282,16 +318,14 @@
                      } else {
                          printf("Postfix expression: %s\n", postfix);
                          
-                         // Create a copy of postfix since strtok will modify it.
-                         char *postfix_copy = strdup(postfix);
+                         // Evaluate the postfix expression
                          int error = 0;
-                         int result = evaluate_postfix(postfix_copy, &error);
-                         free(postfix_copy);
+                         double result = evaluate_postfix(postfix, &error);
                          
                          if (error) {
                              printf("Invalid infix expression.\n");
                          } else {
-                             printf("Result: %d\n", result);
+                             printf("Result: %.4f\n", result);  // Print with 4 decimal places
                          }
                          
                          free(postfix);
