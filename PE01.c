@@ -224,6 +224,7 @@
          // Clear any extra characters from the input buffer.
          if (!is_clear_input_stream()) {
              printf("Invalid choice. Please try again.\n");
+             choice = 'A';
              continue;
          }
          
